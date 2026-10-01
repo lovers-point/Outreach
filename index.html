@@ -3,225 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Outreach Message Generator</title>
+    <title>Outreach Generator | TalentPath Search</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
                     colors: {
                         brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
                         }
                     }
                 }
             }
         }
     </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .active-tab {
-            border-color: #2563eb !important;
-            background-color: #eff6ff !important;
-            color: #2563eb !important;
-        }
-        .fade-in {
-            animation: fadeIn 0.2s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+            background-color: #16a34a !important;
+            color: white !important;
+            border-color: #16a34a !important;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-xl shadow-sm">
-                    <i class="fa-brands fa-linkedin-in"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold text-slate-900 leading-none">Outreach Generator</h1>
-                    <p class="text-xs text-slate-500 mt-0.5">TalentPath Search | Executive Campaign Tool</p>
-                </div>
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 flex items-center justify-between shadow-sm">
+        <div class="flex items-center space-x-3">
+            <div class="bg-brand-600 text-white p-2.5 rounded-xl flex items-center justify-center font-bold text-lg">
+                <i class="fa-brands fa-linkedin-in"></i>
             </div>
-            
-            <button id="customizeBtn" onclick="toggleModal('templateModal')" class="flex items-center space-x-2 text-sm text-slate-600 hover:text-brand-600 bg-slate-100 hover:bg-slate-200/70 px-3.5 py-2 rounded-lg transition font-medium">
-                <i class="fa-solid fa-sliders text-xs"></i>
+            <div>
+                <h1 class="font-bold text-slate-900 text-base leading-tight">Outreach Generator</h1>
+                <p class="text-xs text-slate-500">TalentPath Search | Executive Campaign Tool</p>
+            </div>
+        </div>
+        <div>
+            <button onclick="toggleModal('templateModal')" class="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 transition flex items-center space-x-2">
+                <i class="fa-solid fa-sliders"></i>
                 <span>Customize Templates</span>
             </button>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Sidebar: Controls -->
+        <div class="lg:col-span-5 space-y-5">
             
-            <!-- Left Controls Column -->
-            <div class="lg:col-span-5 space-y-6">
+            <!-- Contact Name Card with Reset Button -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Contact Name <span class="text-rose-500">*</span></label>
+                </div>
                 
-                <!-- Input Card -->
-                <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-6 space-y-6">
-                    
-                    <!-- Contact Name -->
-                    <div>
-                        <label for="contactName" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                            <i class="fa-solid fa-user-tag text-brand-600 mr-1.5"></i> Contact Name <span class="text-rose-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <input type="text" id="contactName" placeholder="e.g. Bradlee Bartram" 
-                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition text-sm font-medium"
-                                oninput="updateGenerator()">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i class="fa-regular fa-user text-sm"></i>
-                            </div>
-                        </div>
-                        <p class="text-[11px] text-slate-400 mt-1.5">First names are automatically extracted from full names.</p>
+                <div class="flex items-center space-x-2">
+                    <div class="relative flex-1">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                            <i class="fa-regular fa-user"></i>
+                        </span>
+                        <input type="text" id="contactName" oninput="updateGenerator()" placeholder="e.g. Bradlee Bartram" 
+                            class="w-full pl-9 pr-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition">
                     </div>
 
-                    <!-- Message Stage Selector -->
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                            <i class="fa-solid fa-layer-group text-brand-600 mr-1.5"></i> Message Type / Stage <span class="text-rose-500">*</span>
-                        </label>
-                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
-                            <button onclick="setStage('inmail')" id="btn-inmail" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-regular fa-paper-plane text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">InMail 1</span>
-                            </button>
-                            <button onclick="setStage('inmail2')" id="btn-inmail2" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-regular fa-paper-plane text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">InMail 2</span>
-                            </button>
-                            <button onclick="setStage('dm')" id="btn-dm" class="stage-btn active-tab flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-solid fa-paper-plane text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">DM 1</span>
-                            </button>
-                            <button onclick="setStage('dm2')" id="btn-dm2" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-solid fa-paper-plane text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">DM 2</span>
-                            </button>
-                            <button onclick="setStage('fu1')" id="btn-fu1" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-solid fa-rotate-right text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">FU 1</span>
-                            </button>
-                            <button onclick="setStage('fu2')" id="btn-fu2" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-solid fa-hourglass-half text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">FU 2</span>
-                            </button>
-                            <button onclick="setStage('fu3')" id="btn-fu3" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
-                                <i class="fa-solid fa-flag-checkered text-xs mb-1"></i>
-                                <span class="text-[11px] font-semibold">FU 3</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Signature Selection Header -->
-                    <div class="pt-2 border-t border-slate-100">
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                <i class="fa-solid fa-file-signature text-brand-600 mr-1.5"></i> Select Signature
-                            </label>
-                            <button onclick="toggleModal('addSigModal')" class="text-xs text-brand-600 hover:text-brand-700 font-semibold flex items-center space-x-1">
-                                <i class="fa-solid fa-plus text-[10px]"></i>
-                                <span>Add Signature</span>
-                            </button>
-                        </div>
-
-                        <!-- Dynamic Signature List -->
-                        <div id="signatureListContainer" class="space-y-2">
-                            <!-- Populated dynamically via JS -->
-                        </div>
-                    </div>
-
+                    <!-- Reset Button -->
+                    <button type="button" onclick="clearContactName()" 
+                        class="px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-lg border border-slate-200 transition flex items-center space-x-1.5 shrink-0" 
+                        title="Clear Name">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
+                    </button>
                 </div>
-
-                <!-- Info Box -->
-                <div class="bg-blue-50/60 rounded-xl border border-blue-100 p-4 text-xs text-blue-900 leading-relaxed flex items-start space-x-3">
-                    <i class="fa-solid fa-circle-info text-blue-600 text-sm mt-0.5 shrink-0"></i>
-                    <div>
-                        <strong class="font-semibold block mb-0.5">Standard Strategy Reminder:</strong>
-                        Use <strong>InMail</strong> for non-connections. Use <strong>DM</strong> for accepted 1st-degree connections. Follow-ups automatically align with sequence logic.
-                    </div>
-                </div>
-
+                <p class="text-[11px] text-slate-400 mt-1">First names are automatically extracted from full names.</p>
             </div>
 
-            <!-- Right Output Column -->
-            <div class="lg:col-span-7 space-y-6">
+            <!-- Message Type / Stage -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">Message Type / Stage <span class="text-rose-500">*</span></label>
                 
-                <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-6 relative">
-                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid fa-eye text-slate-400 text-sm"></i>
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Live Preview</h2>
-                        </div>
-                        <span id="badgeStage" class="text-[11px] font-semibold bg-brand-50 text-brand-600 px-2.5 py-1 rounded-md border border-brand-100">
-                            DM 1 Mode
-                        </span>
-                    </div>
-
-                    <!-- Output Preview Box -->
-                    <div class="space-y-4">
-                        
-                        <!-- Subject Container (InMail Only) -->
-                        <div id="subjectBox" class="hidden fade-in">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Subject Line</label>
-                                <button onclick="copyToClipboard('previewSubject', 'subjectCopyIcon', 'subjectCopyText')" class="text-xs text-brand-600 hover:text-brand-700 font-medium flex items-center space-x-1">
-                                    <i id="subjectCopyIcon" class="fa-regular fa-copy"></i>
-                                    <span id="subjectCopyText">Copy Subject</span>
-                                </button>
-                            </div>
-                            <div id="previewSubject" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-slate-800 text-sm font-semibold select-all">
-                                <!-- Subject Populates Here -->
-                            </div>
-                        </div>
-
-                        <!-- Message Body Container -->
-                        <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Message Body</label>
-                                <button onclick="copyToClipboard('previewBody', 'bodyCopyIcon', 'bodyCopyText')" class="text-xs text-brand-600 hover:text-brand-700 font-medium flex items-center space-x-1">
-                                    <i id="bodyCopyIcon" class="fa-regular fa-copy"></i>
-                                    <span id="bodyCopyText">Copy Message</span>
-                                </button>
-                            </div>
-                            <div id="previewBody" class="w-full min-h-[220px] bg-slate-50 border border-slate-200 rounded-lg p-4 text-slate-800 text-sm whitespace-pre-wrap leading-relaxed select-all font-normal">
-                                <!-- Body Populates Here -->
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Single Copy Full Action -->
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
-                        <button onclick="copyFullScript()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm shadow-sm transition flex items-center justify-center space-x-2">
-                            <i id="fullCopyIcon" class="fa-solid fa-copy"></i>
-                            <span id="fullCopyText">Copy Full Script</span>
-                        </button>
-                    </div>
-
+                <div class="grid grid-cols-4 gap-2 mb-2">
+                    <button type="button" id="btn-inmail" onclick="setStage('inmail')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span>InMail 1</span>
+                    </button>
+                    <button type="button" id="btn-inmail2" onclick="setStage('inmail2')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span>InMail 2</span>
+                    </button>
+                    <button type="button" id="btn-dm" onclick="setStage('dm')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1 active-tab">
+                        <i class="fa-solid fa-bolt text-xs"></i>
+                        <span>DM 1</span>
+                    </button>
+                    <button type="button" id="btn-dm2" onclick="setStage('dm2')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1">
+                        <i class="fa-solid fa-bolt text-xs"></i>
+                        <span>DM 2</span>
+                    </button>
                 </div>
 
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" id="btn-fu1" onclick="setStage('fu1')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1">
+                        <i class="fa-solid fa-clock-rotate-left text-xs"></i>
+                        <span>FU 1</span>
+                    </button>
+                    <button type="button" id="btn-fu2" onclick="setStage('fu2')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1">
+                        <i class="fa-solid fa-clock-rotate-left text-xs"></i>
+                        <span>FU 2</span>
+                    </button>
+                    <button type="button" id="btn-fu3" onclick="setStage('fu3')" class="stage-btn py-2 px-3 text-xs font-semibold rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition flex flex-col items-center justify-center space-y-1">
+                        <i class="fa-solid fa-flag-checkered text-xs"></i>
+                        <span>FU 3</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Signature Selection -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Select Signature</label>
+                    <button type="button" onclick="toggleModal('addSigModal')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 transition">
+                        + Add Signature
+                    </button>
+                </div>
+
+                <div id="signatureListContainer" class="space-y-2">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Strategy Reminder -->
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-3.5 text-xs text-blue-900 flex items-start space-x-3">
+                <i class="fa-solid fa-circle-info text-blue-500 mt-0.5 shrink-0"></i>
+                <div>
+                    <span class="font-semibold block mb-0.5">Standard Strategy Reminder:</span>
+                    Use <strong class="font-semibold">InMail</strong> for non-connections. Use <strong class="font-semibold">DM</strong> for accepted 1st-degree connections. Follow-ups automatically align with sequence logic.
+                </div>
             </div>
 
         </div>
+
+        <!-- Right Side: Live Preview Panel -->
+        <div class="lg:col-span-7 flex flex-col">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col flex-1 p-5">
+                
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-regular fa-eye text-slate-400"></i>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Live Preview</span>
+                    </div>
+                    <span id="badgeStage" class="px-2.5 py-1 text-[11px] font-semibold bg-brand-50 text-brand-700 rounded-full border border-brand-100">DM 1 Mode</span>
+                </div>
+
+                <!-- Subject Box (Conditional) -->
+                <div id="subjectBox" class="mb-4 hidden">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Subject Line</span>
+                        <button onclick="copyToClipboard('previewSubject', 'subjCopyIcon', 'subjCopyText')" class="text-xs font-medium text-slate-500 hover:text-brand-600 transition flex items-center space-x-1">
+                            <i id="subjCopyIcon" class="fa-regular fa-copy"></i>
+                            <span id="subjCopyText">Copy Subject</span>
+                        </button>
+                    </div>
+                    <div id="previewSubject" class="bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm text-slate-800 font-medium"></div>
+                </div>
+
+                <!-- Message Body Box -->
+                <div class="flex-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Message Body</span>
+                        <button onclick="copyToClipboard('previewBody', 'bodyCopyIcon', 'bodyCopyText')" class="text-xs font-medium text-slate-500 hover:text-brand-600 transition flex items-center space-x-1">
+                            <i id="bodyCopyIcon" class="fa-regular fa-copy"></i>
+                            <span id="bodyCopyText">Copy Message</span>
+                        </button>
+                    </div>
+                    <div id="previewBody" class="w-full min-h-[220px] bg-slate-50 border border-slate-200 rounded-lg p-4 text-slate-800 text-sm whitespace-pre-wrap leading-relaxed select-all font-normal flex-1"></div>
+                </div>
+
+                <!-- Single Copy Full Action -->
+                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                    <button onclick="copyFullScript()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm shadow-sm transition flex items-center justify-center space-x-2">
+                        <i id="fullCopyIcon" class="fa-solid fa-copy"></i>
+                        <span id="fullCopyText">Copy Full Script</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
@@ -238,89 +213,84 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            
-            <div class="p-6 space-y-4 text-xs">
+            <div class="p-6 space-y-4">
                 <div>
-                    <label class="font-bold text-slate-700 block mb-1">Display Name / Label *</label>
-                    <input type="text" id="newSigName" placeholder="e.g. Dipto | TalentPath" class="w-full p-2.5 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500 text-slate-800 text-xs">
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Signature Label / Name</label>
+                    <input type="text" id="newSigName" placeholder="e.g. Alex (Casual)" class="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
                 </div>
-
                 <div>
-                    <label class="font-bold text-slate-700 block mb-1">Signature Line Text *</label>
-                    <textarea id="newSigText" rows="3" placeholder="Best Regards,&#10;Dipto | TalentPath Search" class="w-full p-2.5 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500 text-slate-800 text-xs font-sans"></textarea>
-                    <p class="text-[11px] text-slate-400 mt-1">This text will be appended directly to the end of your messages.</p>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Signature Text</label>
+                    <textarea id="newSigText" rows="3" placeholder="Best Regards&#10;Alex | TalentPath" class="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"></textarea>
                 </div>
             </div>
-
-            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end space-x-2">
-                <button onclick="toggleModal('addSigModal')" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 font-medium text-xs">Cancel</button>
-                <button onclick="saveNewSignature()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium text-xs">Save Signature</button>
+            <div class="px-6 py-3 border-t border-slate-200 bg-slate-50 flex justify-end space-x-3">
+                <button onclick="toggleModal('addSigModal')" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">Cancel</button>
+                <button onclick="saveNewSignature()" class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition shadow-sm">Save Signature</button>
             </div>
         </div>
     </div>
 
-    <!-- Template Customization Modal -->
+    <!-- Customize Templates Modal -->
     <div id="templateModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden fade-in">
-            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-                <h3 class="font-bold text-slate-800 text-base">Customize Default Templates</h3>
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full flex flex-col max-h-[90vh] overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50 shrink-0">
+                <h3 class="font-bold text-slate-800 text-sm">Customize Message Templates</h3>
                 <button onclick="toggleModal('templateModal')" class="text-slate-400 hover:text-slate-600 text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            
-            <div class="p-6 overflow-y-auto space-y-6 text-xs">
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">InMail 1 Subject</label>
-                    <input type="text" id="tpl_inmail_subj" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800">
+            <div class="p-6 space-y-4 overflow-y-auto flex-1">
+                <p class="text-xs text-slate-500">Modify your default outreach templates below. Use <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-700">[Name]</code> as a placeholder for the contact's first name.</p>
+                
+                <!-- InMail 1 -->
+                <div class="space-y-2 border-b border-slate-100 pb-4">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">InMail 1</h4>
+                    <input type="text" id="tpl_inmail_subj" class="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-lg" placeholder="Subject">
+                    <textarea id="tpl_inmail_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
 
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">InMail 1 Body</label>
-                    <textarea id="tpl_inmail_body" rows="4" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                <!-- InMail 2 -->
+                <div class="space-y-2 border-b border-slate-100 pb-4">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">InMail 2</h4>
+                    <input type="text" id="tpl_inmail2_subj" class="w-full px-3 py-1.5 text-xs border border-slate-200 rounded-lg" placeholder="Subject">
+                    <textarea id="tpl_inmail2_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
 
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">InMail 2 Subject</label>
-                    <input type="text" id="tpl_inmail2_subj" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800">
+                <!-- DM 1 -->
+                <div class="space-y-2 border-b border-slate-100 pb-4">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">DM 1</h4>
+                    <textarea id="tpl_dm_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
 
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">InMail 2 Body</label>
-                    <textarea id="tpl_inmail2_body" rows="4" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                <!-- DM 2 -->
+                <div class="space-y-2 border-b border-slate-100 pb-4">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">DM 2</h4>
+                    <textarea id="tpl_dm2_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
 
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">DM 1 Body (Wealth Goals)</label>
-                    <textarea id="tpl_dm_body" rows="5" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                <!-- Follow-up 1 -->
+                <div class="space-y-2 border-b border-slate-100 pb-4">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Follow-Up 1</h4>
+                    <textarea id="tpl_fu1_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
 
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">DM 2 Body</label>
-                    <textarea id="tpl_dm2_body" rows="5" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                <!-- Follow-up 2 -->
+                <div class="space-y-2 border-b border-slate-100 pb-4">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Follow-Up 2</h4>
+                    <textarea id="tpl_fu2_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
 
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">FU 1 Body</label>
-                    <textarea id="tpl_fu1_body" rows="3" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
-                </div>
-
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">FU 2 Body</label>
-                    <textarea id="tpl_fu2_body" rows="3" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
-                </div>
-
-                <div>
-                    <label class="font-bold text-slate-700 block mb-1">FU 3 Body</label>
-                    <textarea id="tpl_fu3_body" rows="3" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                <!-- Follow-up 3 -->
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Follow-Up 3</h4>
+                    <textarea id="tpl_fu3_body" rows="3" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg"></textarea>
                 </div>
             </div>
-
-            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
-                <button onclick="resetDefaults()" class="text-rose-600 hover:text-rose-700 font-medium text-xs">Reset Defaults</button>
-                <div class="space-x-2">
-                    <button onclick="toggleModal('templateModal')" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
-                    <button onclick="saveTemplates()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium">Save Templates</button>
+            <div class="px-6 py-3 border-t border-slate-200 bg-slate-50 flex justify-between items-center shrink-0">
+                <button onclick="resetDefaults()" class="px-4 py-2 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-200 transition">Reset to Factory Defaults</button>
+                <div class="flex space-x-2">
+                    <button onclick="toggleModal('templateModal')" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">Cancel</button>
+                    <button onclick="saveTemplates()" class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition shadow-sm">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -374,8 +344,25 @@
             return str.split('[Name]').join(name);
         }
 
+        function clearContactName() {
+            const nameInput = document.getElementById('contactName');
+            if (nameInput) {
+                nameInput.value = '';
+                updateGenerator();
+                nameInput.focus();
+            }
+        }
+
         function init() {
-            // Load saved signatures from localStorage
+            const savedTemplates = localStorage.getItem('tp_outreach_templates');
+            if (savedTemplates) {
+                try {
+                    templates = { ...DEFAULT_TEMPLATES, ...JSON.parse(savedTemplates) };
+                } catch(e) {
+                    templates = { ...DEFAULT_TEMPLATES };
+                }
+            }
+
             const savedSigs = localStorage.getItem('tp_user_signatures');
             if (savedSigs) {
                 try {
@@ -390,7 +377,6 @@
             updateGenerator();
         }
 
-        // Render signatures list dynamically
         function renderSignatureList() {
             const container = document.getElementById('signatureListContainer');
             container.innerHTML = '';
@@ -426,7 +412,6 @@
                 container.appendChild(label);
             });
 
-            // Add "None" option
             const noneChecked = selectedSigId === 'none';
             const noneLabel = document.createElement('label');
             noneLabel.className = `flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition ${noneChecked ? 'bg-slate-50 border-brand-200' : ''}`;
@@ -467,7 +452,6 @@
 
             selectedSigId = newSig.id;
 
-            // Reset modal inputs
             document.getElementById('newSigName').value = '';
             document.getElementById('newSigText').value = '';
 
