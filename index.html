@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Outreach Message Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .active-tab {
+            border-color: #2563eb !important;
+            background-color: #eff6ff !important;
+            color: #2563eb !important;
+        }
+        .fade-in {
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-xl shadow-sm">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 leading-none">Outreach Generator</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">TalentPath Search | Executive Campaign Tool</p>
+                </div>
+            </div>
+            
+            <button id="customizeBtn" onclick="toggleModal('templateModal')" class="flex items-center space-x-2 text-sm text-slate-600 hover:text-brand-600 bg-slate-100 hover:bg-slate-200/70 px-3.5 py-2 rounded-lg transition font-medium">
+                <i class="fa-solid fa-sliders text-xs"></i>
+                <span>Customize Templates</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Controls Column -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- Input Card -->
+                <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-6 space-y-6">
+                    
+                    <!-- Contact Name -->
+                    <div>
+                        <label for="contactName" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                            <i class="fa-solid fa-user-tag text-brand-600 mr-1.5"></i> Contact Name <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="contactName" placeholder="e.g. Bradlee Bartram" 
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition text-sm font-medium"
+                                oninput="updateGenerator()">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-regular fa-user text-sm"></i>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1.5">First names are automatically extracted from full names.</p>
+                    </div>
+
+                    <!-- Message Stage Selector -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                            <i class="fa-solid fa-layer-group text-brand-600 mr-1.5"></i> Message Type / Stage <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+                            <button onclick="setStage('inmail')" id="btn-inmail" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-regular fa-paper-plane text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">InMail 1</span>
+                            </button>
+                            <button onclick="setStage('inmail2')" id="btn-inmail2" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-regular fa-paper-plane text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">InMail 2</span>
+                            </button>
+                            <button onclick="setStage('dm')" id="btn-dm" class="stage-btn active-tab flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-solid fa-paper-plane text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">DM 1</span>
+                            </button>
+                            <button onclick="setStage('dm2')" id="btn-dm2" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-solid fa-paper-plane text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">DM 2</span>
+                            </button>
+                            <button onclick="setStage('fu1')" id="btn-fu1" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-solid fa-rotate-right text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">FU 1</span>
+                            </button>
+                            <button onclick="setStage('fu2')" id="btn-fu2" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-solid fa-hourglass-half text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">FU 2</span>
+                            </button>
+                            <button onclick="setStage('fu3')" id="btn-fu3" class="stage-btn flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 transition text-center">
+                                <i class="fa-solid fa-flag-checkered text-xs mb-1"></i>
+                                <span class="text-[11px] font-semibold">FU 3</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Signature Selection Header -->
+                    <div class="pt-2 border-t border-slate-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="text-xs font-bold uppercase tracking-wider text-slate-500">
+                                <i class="fa-solid fa-file-signature text-brand-600 mr-1.5"></i> Select Signature
+                            </label>
+                            <button onclick="toggleModal('addSigModal')" class="text-xs text-brand-600 hover:text-brand-700 font-semibold flex items-center space-x-1">
+                                <i class="fa-solid fa-plus text-[10px]"></i>
+                                <span>Add Signature</span>
+                            </button>
+                        </div>
+
+                        <!-- Dynamic Signature List -->
+                        <div id="signatureListContainer" class="space-y-2">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Info Box -->
+                <div class="bg-blue-50/60 rounded-xl border border-blue-100 p-4 text-xs text-blue-900 leading-relaxed flex items-start space-x-3">
+                    <i class="fa-solid fa-circle-info text-blue-600 text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                        <strong class="font-semibold block mb-0.5">Standard Strategy Reminder:</strong>
+                        Use <strong>InMail</strong> for non-connections. Use <strong>DM</strong> for accepted 1st-degree connections. Follow-ups automatically align with sequence logic.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Output Column -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm p-6 relative">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-eye text-slate-400 text-sm"></i>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Live Preview</h2>
+                        </div>
+                        <span id="badgeStage" class="text-[11px] font-semibold bg-brand-50 text-brand-600 px-2.5 py-1 rounded-md border border-brand-100">
+                            DM 1 Mode
+                        </span>
+                    </div>
+
+                    <!-- Output Preview Box -->
+                    <div class="space-y-4">
+                        
+                        <!-- Subject Container (InMail Only) -->
+                        <div id="subjectBox" class="hidden fade-in">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Subject Line</label>
+                                <button onclick="copyToClipboard('previewSubject', 'subjectCopyIcon', 'subjectCopyText')" class="text-xs text-brand-600 hover:text-brand-700 font-medium flex items-center space-x-1">
+                                    <i id="subjectCopyIcon" class="fa-regular fa-copy"></i>
+                                    <span id="subjectCopyText">Copy Subject</span>
+                                </button>
+                            </div>
+                            <div id="previewSubject" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-slate-800 text-sm font-semibold select-all">
+                                <!-- Subject Populates Here -->
+                            </div>
+                        </div>
+
+                        <!-- Message Body Container -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Message Body</label>
+                                <button onclick="copyToClipboard('previewBody', 'bodyCopyIcon', 'bodyCopyText')" class="text-xs text-brand-600 hover:text-brand-700 font-medium flex items-center space-x-1">
+                                    <i id="bodyCopyIcon" class="fa-regular fa-copy"></i>
+                                    <span id="bodyCopyText">Copy Message</span>
+                                </button>
+                            </div>
+                            <div id="previewBody" class="w-full min-h-[220px] bg-slate-50 border border-slate-200 rounded-lg p-4 text-slate-800 text-sm whitespace-pre-wrap leading-relaxed select-all font-normal">
+                                <!-- Body Populates Here -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Single Copy Full Action -->
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                        <button onclick="copyFullScript()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm shadow-sm transition flex items-center justify-center space-x-2">
+                            <i id="fullCopyIcon" class="fa-solid fa-copy"></i>
+                            <span id="fullCopyText">Copy Full Script</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-4 text-center text-xs text-slate-400">
+        &copy; TalentPath Search Outreach Assistant &bull; Designed for High-Volume LinkedIn Campaigns
+    </footer>
+
+    <!-- Add New Signature Modal -->
+    <div id="addSigModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full flex flex-col overflow-hidden fade-in">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <h3 class="font-bold text-slate-800 text-sm">Add New Signature</h3>
+                <button onclick="toggleModal('addSigModal')" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4 text-xs">
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Display Name / Label *</label>
+                    <input type="text" id="newSigName" placeholder="e.g. Dipto | TalentPath" class="w-full p-2.5 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500 text-slate-800 text-xs">
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">Signature Line Text *</label>
+                    <textarea id="newSigText" rows="3" placeholder="Best Regards,&#10;Dipto | TalentPath Search" class="w-full p-2.5 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-500 text-slate-800 text-xs font-sans"></textarea>
+                    <p class="text-[11px] text-slate-400 mt-1">This text will be appended directly to the end of your messages.</p>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-end space-x-2">
+                <button onclick="toggleModal('addSigModal')" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 font-medium text-xs">Cancel</button>
+                <button onclick="saveNewSignature()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium text-xs">Save Signature</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Customization Modal -->
+    <div id="templateModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden fade-in">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <h3 class="font-bold text-slate-800 text-base">Customize Default Templates</h3>
+                <button onclick="toggleModal('templateModal')" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-6 text-xs">
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">InMail 1 Subject</label>
+                    <input type="text" id="tpl_inmail_subj" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800">
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">InMail 1 Body</label>
+                    <textarea id="tpl_inmail_body" rows="4" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">InMail 2 Subject</label>
+                    <input type="text" id="tpl_inmail2_subj" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800">
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">InMail 2 Body</label>
+                    <textarea id="tpl_inmail2_body" rows="4" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">DM 1 Body (Wealth Goals)</label>
+                    <textarea id="tpl_dm_body" rows="5" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">DM 2 Body</label>
+                    <textarea id="tpl_dm2_body" rows="5" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">FU 1 Body</label>
+                    <textarea id="tpl_fu1_body" rows="3" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">FU 2 Body</label>
+                    <textarea id="tpl_fu2_body" rows="3" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+
+                <div>
+                    <label class="font-bold text-slate-700 block mb-1">FU 3 Body</label>
+                    <textarea id="tpl_fu3_body" rows="3" class="w-full p-2 border border-slate-200 rounded bg-slate-50 text-slate-800 font-mono"></textarea>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+                <button onclick="resetDefaults()" class="text-rose-600 hover:text-rose-700 font-medium text-xs">Reset Defaults</button>
+                <div class="space-x-2">
+                    <button onclick="toggleModal('templateModal')" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
+                    <button onclick="saveTemplates()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium">Save Templates</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        // Core Default Templates
+        const DEFAULT_TEMPLATES = {
+            inmail_subj: "Quick question, [Name]",
+            inmail_body: "Hi [Name],\n\nA client requested I connect. They expressed interest in your experience and asked me to connect to see if you'd be open to discussing franchise options in your area.\n\nOpen to learning more? No sales pitch, just sound guidance around franchising.",
+            
+            inmail2_subj: "Quick question, [Name]",
+            inmail2_body: "Hi [Name],\n\nI'm reaching out because a client of mine was impressed by your background and requested that I connect with you. They are currently looking for the right partner for a franchise opportunity in your local area.\n\nWould you be open to a brief 15-minute call to see if this aligns?",
+
+            dm_body: "Hi [Name],\n\nThanks for connecting! \n\nI am reaching out on behalf of a client who works with senior corporate leaders looking to leverage their executive skill sets to build secondary, semi-absentee corporate asset portfolios, without leaving their day jobs. \n\nOpen to a brief 15-minute introduction this week to see if diversifying into these private equity-backed frameworks aligns with your long-term wealth goals?",
+
+            dm2_body: "Hi [Name],\n\nA client requested I connect. They expressed interest in your experience and asked me to reach out to see if you’d be open to discussing franchise options in your area.\n\nWould you be open to a brief 15-minute call to learn more? No sales pitch, just sound guidance around franchising.",
+
+            fu1_body: "Hi [Name], I know you're likely busy, so I just wanted to drop a quick note. \nNo pressure at all, but let me know if you might have 15 minutes to connect this week or next!",
+            
+            fu2_body: "Hi [Name], wanted to see if you had a chance to give this any thought?",
+            
+            fu3_body: "Hi [Name], following up one last time on my previous note. Assuming timing isn't right at the moment, so I'll leave you alone after this - but if you'd ever like to explore franchise options down the road, feel free to reach back out!"
+        };
+
+        const FACTORY_SIGNATURES = [
+            {
+                id: 'elizabeth',
+                label: 'Elizabeth Bortolas',
+                subtext: 'Best Regards | TalentPath Search',
+                text: 'Best Regards,\nElizabeth Bortolas | TalentPath Search',
+                isDefault: true
+            },
+            {
+                id: 'alexander',
+                label: 'Alexander Ovando',
+                subtext: 'Warm Regards | TalentPath Search',
+                text: 'Warm Regards\nAlexander Ovando | TalentPath Search',
+                isDefault: true
+            }
+        ];
+
+        let currentStage = 'dm';
+        let templates = { ...DEFAULT_TEMPLATES };
+        let userSignatures = [];
+        let selectedSigId = 'elizabeth';
+
+        function safeReplaceName(str, name) {
+            if (!str) return '';
+            return str.split('[Name]').join(name);
+        }
+
+        function init() {
+            // Load saved signatures from localStorage
+            const savedSigs = localStorage.getItem('tp_user_signatures');
+            if (savedSigs) {
+                try {
+                    userSignatures = JSON.parse(savedSigs);
+                } catch(e) {
+                    userSignatures = [];
+                }
+            }
+
+            renderSignatureList();
+            populateModalInputs();
+            updateGenerator();
+        }
+
+        // Render signatures list dynamically
+        function renderSignatureList() {
+            const container = document.getElementById('signatureListContainer');
+            container.innerHTML = '';
+
+            const allSigs = [...FACTORY_SIGNATURES, ...userSignatures];
+
+            allSigs.forEach(sig => {
+                const isChecked = sig.id === selectedSigId;
+                
+                const label = document.createElement('label');
+                label.className = `flex items-center justify-between p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition ${isChecked ? 'bg-slate-50 border-brand-200' : ''}`;
+
+                let deleteBtnHtml = '';
+                if (!sig.isDefault) {
+                    deleteBtnHtml = `
+                        <button type="button" onclick="deleteSignature(event, '${sig.id}')" class="text-slate-400 hover:text-rose-600 text-xs p-1 rounded hover:bg-rose-50 transition" title="Delete Signature">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    `;
+                }
+
+                label.innerHTML = `
+                    <div class="flex items-center space-x-3 overflow-hidden pr-2">
+                        <input type="radio" name="signatureOption" value="${sig.id}" ${isChecked ? 'checked' : ''} onchange="selectSig('${sig.id}')" class="w-4 h-4 text-brand-600 focus:ring-brand-500 border-slate-300 shrink-0">
+                        <div class="text-xs truncate">
+                            <span class="font-semibold text-slate-800 block truncate">${sig.label}</span>
+                            <span class="text-slate-500 block text-[11px] truncate">${sig.subtext || ''}</span>
+                        </div>
+                    </div>
+                    ${deleteBtnHtml}
+                `;
+
+                container.appendChild(label);
+            });
+
+            // Add "None" option
+            const noneChecked = selectedSigId === 'none';
+            const noneLabel = document.createElement('label');
+            noneLabel.className = `flex items-center space-x-3 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition ${noneChecked ? 'bg-slate-50 border-brand-200' : ''}`;
+            noneLabel.innerHTML = `
+                <input type="radio" name="signatureOption" value="none" ${noneChecked ? 'checked' : ''} onchange="selectSig('none')" class="w-4 h-4 text-brand-600 focus:ring-brand-500 border-slate-300">
+                <div class="text-xs font-semibold text-slate-600">
+                    None (No Signature)
+                </div>
+            `;
+            container.appendChild(noneLabel);
+        }
+
+        function selectSig(id) {
+            selectedSigId = id;
+            renderSignatureList();
+            updateGenerator();
+        }
+
+        function saveNewSignature() {
+            const labelInput = document.getElementById('newSigName').value.trim();
+            const textInput = document.getElementById('newSigText').value.trim();
+
+            if (!labelInput || !textInput) {
+                alert('Please enter both a label and the signature text.');
+                return;
+            }
+
+            const newSig = {
+                id: 'custom_' + Date.now(),
+                label: labelInput,
+                subtext: textInput.split('\n')[0],
+                text: textInput,
+                isDefault: false
+            };
+
+            userSignatures.push(newSig);
+            localStorage.setItem('tp_user_signatures', JSON.stringify(userSignatures));
+
+            selectedSigId = newSig.id;
+
+            // Reset modal inputs
+            document.getElementById('newSigName').value = '';
+            document.getElementById('newSigText').value = '';
+
+            toggleModal('addSigModal');
+            renderSignatureList();
+            updateGenerator();
+        }
+
+        function deleteSignature(e, id) {
+            e.stopPropagation();
+            if (confirm('Are you sure you want to delete this signature?')) {
+                userSignatures = userSignatures.filter(s => s.id !== id);
+                localStorage.setItem('tp_user_signatures', JSON.stringify(userSignatures));
+                
+                if (selectedSigId === id) {
+                    selectedSigId = 'elizabeth';
+                }
+
+                renderSignatureList();
+                updateGenerator();
+            }
+        }
+
+        function setStage(stage) {
+            currentStage = stage;
+            
+            document.querySelectorAll('.stage-btn').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            document.getElementById(`btn-${stage}`).classList.add('active-tab');
+
+            const badgeMap = {
+                'inmail': 'InMail 1 Mode',
+                'inmail2': 'InMail 2 Mode',
+                'dm': 'DM 1 Mode',
+                'dm2': 'DM 2 Mode',
+                'fu1': 'Follow-Up 1',
+                'fu2': 'Follow-Up 2',
+                'fu3': 'Follow-Up 3'
+            };
+            document.getElementById('badgeStage').innerText = badgeMap[stage];
+
+            const subjectBox = document.getElementById('subjectBox');
+            if (stage === 'inmail' || stage === 'inmail2') {
+                subjectBox.classList.remove('hidden');
+            } else {
+                subjectBox.classList.add('hidden');
+            }
+
+            updateGenerator();
+        }
+
+        function extractFirstName(rawInput) {
+            if (!rawInput || !rawInput.trim()) return '[Name]';
+            const cleaned = rawInput.trim();
+            const parts = cleaned.split(/\s+/);
+            return parts[0] || '[Name]';
+        }
+
+        function updateGenerator() {
+            const nameInput = document.getElementById('contactName').value;
+            const firstName = extractFirstName(nameInput);
+            
+            const allSigs = [...FACTORY_SIGNATURES, ...userSignatures];
+            const activeSigObj = allSigs.find(s => s.id === selectedSigId);
+            const signatureText = activeSigObj ? activeSigObj.text : '';
+
+            let subject = '';
+            let body = '';
+
+            if (currentStage === 'inmail') {
+                subject = safeReplaceName(templates.inmail_subj, firstName);
+                body = safeReplaceName(templates.inmail_body, firstName);
+            } else if (currentStage === 'inmail2') {
+                subject = safeReplaceName(templates.inmail2_subj, firstName);
+                body = safeReplaceName(templates.inmail2_body, firstName);
+            } else if (currentStage === 'dm') {
+                body = safeReplaceName(templates.dm_body, firstName);
+            } else if (currentStage === 'dm2') {
+                body = safeReplaceName(templates.dm2_body, firstName);
+            } else if (currentStage === 'fu1') {
+                body = safeReplaceName(templates.fu1_body, firstName);
+            } else if (currentStage === 'fu2') {
+                body = safeReplaceName(templates.fu2_body, firstName);
+            } else if (currentStage === 'fu3') {
+                body = safeReplaceName(templates.fu3_body, firstName);
+            }
+
+            if (signatureText && signatureText.trim()) {
+                body += `\n\n${signatureText}`;
+            }
+
+            document.getElementById('previewSubject').innerText = subject;
+            document.getElementById('previewBody').innerText = body;
+        }
+
+        function copyToClipboard(elementId, iconId, textId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            if (!textToCopy) return;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const icon = document.getElementById(iconId);
+                const text = document.getElementById(textId);
+                
+                const origIcon = icon.className;
+                const origText = text.innerText;
+
+                icon.className = "fa-solid fa-check text-emerald-600";
+                text.innerText = "Copied!";
+                text.classList.add("text-emerald-600");
+
+                setTimeout(() => {
+                    icon.className = origIcon;
+                    text.innerText = origText;
+                    text.classList.remove("text-emerald-600");
+                }, 1800);
+            });
+        }
+
+        function copyFullScript() {
+            let fullText = "";
+            if (currentStage === 'inmail' || currentStage === 'inmail2') {
+                const subj = document.getElementById('previewSubject').innerText;
+                const body = document.getElementById('previewBody').innerText;
+                fullText = `SUBJECT:\n${subj}\n\nMESSAGE:\n${body}`;
+            } else {
+                fullText = document.getElementById('previewBody').innerText;
+            }
+
+            navigator.clipboard.writeText(fullText).then(() => {
+                const icon = document.getElementById('fullCopyIcon');
+                const text = document.getElementById('fullCopyText');
+
+                icon.className = "fa-solid fa-check";
+                text.innerText = "Script Copied!";
+
+                setTimeout(() => {
+                    icon.className = "fa-solid fa-copy";
+                    text.innerText = "Copy Full Script";
+                }, 1800);
+            });
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        function populateModalInputs() {
+            document.getElementById('tpl_inmail_subj').value = templates.inmail_subj;
+            document.getElementById('tpl_inmail_body').value = templates.inmail_body;
+            document.getElementById('tpl_inmail2_subj').value = templates.inmail2_subj;
+            document.getElementById('tpl_inmail2_body').value = templates.inmail2_body;
+            document.getElementById('tpl_dm_body').value = templates.dm_body;
+            document.getElementById('tpl_dm2_body').value = templates.dm2_body;
+            document.getElementById('tpl_fu1_body').value = templates.fu1_body;
+            document.getElementById('tpl_fu2_body').value = templates.fu2_body;
+            document.getElementById('tpl_fu3_body').value = templates.fu3_body;
+        }
+
+        function saveTemplates() {
+            templates.inmail_subj = document.getElementById('tpl_inmail_subj').value;
+            templates.inmail_body = document.getElementById('tpl_inmail_body').value;
+            templates.inmail2_subj = document.getElementById('tpl_inmail2_subj').value;
+            templates.inmail2_body = document.getElementById('tpl_inmail2_body').value;
+            templates.dm_body = document.getElementById('tpl_dm_body').value;
+            templates.dm2_body = document.getElementById('tpl_dm2_body').value;
+            templates.fu1_body = document.getElementById('tpl_fu1_body').value;
+            templates.fu2_body = document.getElementById('tpl_fu2_body').value;
+            templates.fu3_body = document.getElementById('tpl_fu3_body').value;
+
+            localStorage.setItem('tp_outreach_templates', JSON.stringify(templates));
+            toggleModal('templateModal');
+            updateGenerator();
+        }
+
+        function resetDefaults() {
+            if (confirm("Reset all templates back to factory defaults?")) {
+                templates = { ...DEFAULT_TEMPLATES };
+                localStorage.removeItem('tp_outreach_templates');
+                populateModalInputs();
+                updateGenerator();
+                toggleModal('templateModal');
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
